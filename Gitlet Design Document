@@ -1,0 +1,81 @@
+1. Classes and Data Structures
+    1.1 Main
+        Used to run all gitlet commands, such as init, add, and so on.
+
+    1.2 Stage
+        Stores files added to the staging area.
+        Fields:
+            List<Blob> stagedBlobs; // files/blobs added to staging area
+
+    1.3 Commit
+        Sets and contains information of each commit object.
+        Fields:
+            String id; // commit SHA-1 id
+            Timestamp commitTime; // the date and time the commit was made
+            String message; // log message at the commit
+            String refToParent; // SHA-1 reference to parent commit
+            List<String> refToBlob; // file (blob) reference of the files in the commit
+
+    1.4 Blob
+        Stores all the file versions in gitlet.
+        Fields:
+            String id; // SHA-1 reference to file
+            File file; // file
+
+    1.5 Gitlet
+        Manages all the commit history.
+        Fields:
+            Map<String, Commit> commitMap; // all existing commits (values) with SHA-1s (keys)
+            String head; // HEAD pointer
+            String initialCommitId; // SHA-1 reference to initial commit
+            File CWD = new File("."); // current directory
+            File GITLET_FOLDER = Utils.join(CWD, ".gitlet"); // directory where gitlet resides
+
+2. Algorithms
+    2.1 Main
+        public static void main(String... args); // contains calls to all gitlet commands
+
+    2.2 Stage
+        public Stage(); // no args constructor to initialize empty blob list
+        public void add(Blob blob); // adds a blob to the blob list
+        public void remove(Blob blob); // removes a blob from the blob list
+
+    2.3 Commit
+        public String getId(); // gets SHA-1 reference to the commit instance
+        public void setId(String id); // sets SHA-1 reference to the commit instance
+        public String getMessage(); // gets commit message
+        public void setMessage(String message); // sets commit message
+        public String getRefToParent(); // gets SHA-1 reference to parent commit
+        public void setRefToParent(String refToParent); // sets SHA-1 reference to parent commit
+        public String getRefToBlob(); // gets SHA-1 references to blobs in the commit
+        public void setRefToBlob(String refToBlob); // sets SHA-1 references to blobs in the commit
+        public Timestamp getCommitTime(); // gets time of the commit
+        public void setCommitTime(Timestamp commitTime); // sets time of the commit
+        public void saveCommit(); // gives the commit a SHA-1 and saves it to file whose name is the SHA-1
+        public static Commit fromFile(String name); // reads a commit file with its name
+
+    2.4 Blob
+        public Blob(File file); // constructor to initialize blob object with a file
+        public String getId(); // gets SHA-1 reference to the blob
+        public void setId(String id); // sets SHA-1 reference to the blob
+        public File getFile();
+        public void setFile(File file);
+        public void saveBlob(); // gives the blob a SHA-1 and saves it to file whose name is the SHA-1
+        public static Blob fromFile(String name); // reads a blob file with its name
+
+    2.5 Gitlet
+        public Gitlet(); // no args constructor to initialize Gitlet object
+        public void init(); // creates a new Gitlet version-control system in the current directory
+        public void add(String fileName); // adds a file to staging area
+        public void commit(String msg); // creates a new commit
+        public void checkout(); // checks out a file or branch
+        public void log(); // displays information about each commit backwards until the initial commit
+        public void global-log(); // displays information about all commits in history
+        public void rm(); // removes the file from staging area
+        public void find();
+        ... (other commands)
+        public void saveGitlet(); // saves the Gitlet instance object
+        public static Gitlet fromFile(); // reads the Gitlet object from file
+
+3. Persistence
+    3.1
